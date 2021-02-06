@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Météo</title>
+    <script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js" defer></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" defer></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" defer></script>
+    <script src="https://code.iconify.design/1/1.0.7/iconify.min.js" defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" defer></script>
+    <script src="../data/inMemoryCities.js" defer></script>
+    <script src="../utils/utils.js" defer></script>
+    <script src="./animations.js" defer></script>
+    <script src="../controller/weather.js" defer></script>
+    <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css"/>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="shortcut icon" href="ico.png" />
+</head>
+
+<body>
+    <div id="meta" class="container-fluid justify-content-center px-lg-5">
+        <div class="row mx-lg-n5 row-cols-1">
+            <div class="col d-flex justify-content-center">
+                <h1 class="meteo">
+                    <span class="meteo-text-wrapper">
+                        <span class="meteo-letters">METEO</span>
+                    </span>
+                </h1>
+            </div>
+            <div class="col d-flex justify-content-center h-100">
+                <a href="#" class="map-icon">
+                    <i class="fa fa-map-marker fa-2x"></i>
+                </a>
+                <div class="search">
+                    <input class="search-input" type="text" placeholder="Nom ou code postal d'une ville...">
+                    <a href="#" class="search-icon">
+                        <i class="fa fa-search"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col d-flex justify-content-center">
+                <h1 class="error">
+                    <span class="error-text-wrapper">
+                        <span class="error-letters">La ville n'existe pas</span>
+                    </span>
+                </h1>
+            </div>
+        </div>
+        <div id="map-container" class="container-fluid">
+            <div id="map"></div>
+        </div>
+        <div class="row mx-lg-n5 row-cols-1">
+            <div id="data">
+                <div class="container ">
+                    <div class="row justify-content-center">
+                        <div class="col-9 col-xl-6 col-lg-7 col-md-8 col-sm-8">
+                            <div id="previous-day">
+                                <a id="previous-day-icon">
+                                    <i class="fa fa-chevron-left fa-2x"></i>
+                                </a>
+                            </div>
+                            <div class="div1 p-4 p-md-4 ">
+                                <div class="container-fluid">
+                                    <div class="row justify-content-center">
+                                        <div class="col-12 text-center pb-3">
+                                            <h1 id="city-name"></h1>
+                                        </div>
+                                        <div id="basic-data"
+                                            class="col-lg-6 col-md-6 col-12 py-3 justify-content-center">
+                                            <h1 class="my-0" id="tmp">
+                                                <span id="temperature"></span><sup>°C </sup>
+                                                <span id="tmax"></span><sup id=degree>°C</sup>
+                                            </h1>
+                                            <p id="date" class="my-0"></p>
+                                            <p id="hour" class="my-0"></p>
+                                            <h4 id="weather" class="my-0"></h4>
+                                        </div>
+                                        <div id="complex-data" class="col-lg-6 col-md-6 col-12 py-3">
+                                            <div class="row col-12 pb-2">
+                                                <img alt="weather-icon" id="weather-icon">
+                                            </div>
+                                            <div class="row col-12 m-0">
+                                                <div id="data-table" class="container-fluid">
+                                                    <div class="row">
+                                                        <div class="col p-0">
+                                                            <div class="row">
+                                                                <p class="table-content">
+                                                                    <span class="iconify" data-icon="ion:water-outline"
+                                                                        data-inline="false"></span>
+                                                                    <span id="humidity"></span>%
+                                                                </p>
+                                                            </div>
+                                                            <div class="row">
+                                                                <p class="table-content">
+                                                                    <span class="iconify" data-icon="feather:sunrise"
+                                                                        data-inline="false"></span>
+                                                                    <span id="sunrise"></span>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col p-0">
+                                                            <div class="row">
+                                                                <p class="table-content">
+                                                                    <span class="iconify" data-icon="uil:wind"
+                                                                        data-inline="false"></span>
+                                                                    <span id="wind-speed"></span> km/h
+                                                                </p>
+                                                            </div>
+                                                            <div class="row">
+                                                                <p class="table-content">
+                                                                    <span class="iconify" data-icon="feather:sunset"
+                                                                        data-inline="false"></span>
+                                                                    <span id="sunset"></span>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="div2"></div>
+                            <div id="next-day">
+                                <a id="next-day-icon">
+                                    <i class="fa fa-chevron-right fa-2x hover-activated"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="container-sm justify-content-center">
+                <div class="scroll">
+                    <div class="items"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
